@@ -17,18 +17,18 @@
 
 import * as T from "../libs/CS559-THREE/build/three.module.js";
 import { GrWorld } from "../libs/CS559-Framework/GrWorld.js";
-import {GrObject } from "../libs/CS559-Framework/GrObject.js";  // only for typing
+import { GrObject } from "../libs/CS559-Framework/GrObject.js";  // only for typing
 import * as Helpers from "../libs/CS559-Libs/helpers.js";
 import { WorldUI } from "../libs/CS559-Framework/WorldUI.js";
+
 import { SimpleHouse } from "../examples/house.js";
 import { CircularTrack, TrackCube, TrackCar } from "../examples/track.js";
-import { Helicopter, Helipad } from "../examples/helicopter.js";
+//import { Helicopter, Helipad } from "../examples/helicopter.js";
 import { ShinySculpture } from "../examples/shinySculpture.js";
 import { MorphTest } from "../examples/morph.js";
-//import { GrTrees } from "../examples/myObj.js";
-
-
-
+import { GrTrees, GrSnow,GrHelipad,GrCarousel,GrAirplane1,GrAirplane2 } from "./myObj.js";
+//import {GrBuilding} from "./house.js";
+//import { GrAirplane1, GrAirplane2, GrBalloon, GrCarousel, GrHelipad } "./copter.js";
 
 function grtown() {
   // make the world
@@ -36,10 +36,21 @@ function grtown() {
     width: 800,
     height: 600,
     groundplanesize: 30 // make the ground plane big enough for a world of stuff
-  });
-
-  // put stuff into the world
+    
+  })
   
+  //TO-DO
+  let loader = new T.CubeTextureLoader();
+  loader.setPath('./textures/');
+  let envTexture = loader.load([
+    "skyLeft.jpg", "skyRight.jpg",
+    "skyTop.jpg", "skyBottom.jpg",
+    "skyFront.jpg", "skyBack.jpg"
+  ]);
+  world.scene.background = envTexture;
+  
+
+
   for (let i = -19; i < 20; i += 5) {
     world.add(new SimpleHouse({ x: i, z: -12 }));
     world.add(new SimpleHouse({ x: i, z: 12 }));
@@ -61,23 +72,35 @@ function grtown() {
   world.add(tc3);
 
   /** Helicopter - first make places for it to land*/
-  world.add(new Helipad(-15, 0, 0));
-  world.add(new Helipad(15, 0, 0));
-  world.add(new Helipad(0, 0, -17));
-  world.add(new Helipad(0, 0, 17));
-  let copter = new Helicopter();
-  world.add(copter);
-  copter.getPads(world.objects);
+  world.add(new GrHelipad(-15, 0, 0));
+  world.add(new GrHelipad(15, 0, 0));
+  world.add(new GrHelipad(0, 0, -17));
+  world.add(new GrHelipad(0, 0, 17));
+  //let copter = new Helicopter();
+  //world.add(new quadcopter());
+  //copter.getPads(world.objects);
+  world.add(new GrAirplane1());
+
 
   //trees
-  //world.add(new GrTrees({x: -25, z: 10, s: 1.5}));
-  //world.add(new GrTrees({x: -25, z:-10, s: 1.5}));
+  world.add(new GrTrees({ x: -25, z: 10, s: 1.5 }));
+  world.add(new GrTrees({ x: -25, z: -10, s: 1.5 }));
+  world.add(new GrTrees({ x: -25, z: 15, s: 1.5 }));
+  world.add(new GrTrees({ x: -25, z: -15, s: 1.5 }));
+  world.add(new GrTrees({ x: -25, z: -20, s: 1.5 }));
+  world.add(new GrTrees({ x: -25, z: 20, s: 1.5 }));
+
+  //carousel
+  world.add(new GrCarousel({x: 25, size: 1.5}));
+
+  //snow in the world
+  world.add(new GrSnow());
 
   // these are testing objects
   world.add(new ShinySculpture(world));
   world.add(new MorphTest({ x: 10, y: 3, r: 2 }));
 
-  
+
 
   // build and run the UI
 
