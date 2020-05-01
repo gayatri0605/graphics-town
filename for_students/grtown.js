@@ -20,12 +20,17 @@ import { GrWorld } from "../libs/CS559-Framework/GrWorld.js";
 import { GrObject } from "../libs/CS559-Framework/GrObject.js";  // only for typing
 import * as Helpers from "../libs/CS559-Libs/helpers.js";
 import { WorldUI } from "../libs/CS559-Framework/WorldUI.js";
+import * as SimpleObjects from "../libs/CS559-Framework/SimpleObjects.js";
+import {shaderMaterial} from "../libs/CS559-Framework/shaderHelper.js";
+import { AutoUI } from "../libs/CS559-Framework/AutoUI.js";
 
 import { CircularTrack, TrackCube, TrackCar } from "../examples/track.js";
 import { ShinySculpture } from "../examples/shinySculpture.js";
 import { MorphTest } from "../examples/morph.js";
-import { GrTrees, GrSnow, GrHelipad, GrCarousel, GrAirplane1, GrAirplane2, GrBall, GrTrack } from "./myObj.js";
+import { GrTrees, GrSnow, GrHelipad, GrCarousel, GrAirplane1, GrAirplane2, GrBall, GrTrack, GrCar3,GrMud} from "./myObj.js";
 import {GrBuilding1,GrBuilding2,GrBuilding3} from "../for_students/house.js"
+import { GrCrane, GrExcavator } from "./construction.js";
+import { ForkLift, GantryCrane } from "./construction.js";
 
 
 
@@ -34,8 +39,9 @@ function grtown() {
   // make the world
   let world = new GrWorld({
     width: 1500,
-    height: 950,
-    groundplanesize: 35, // make the ground plane big enough for a world of stuff
+    height: 800,
+    groundplane: null,
+    groundplanesize: 0, // make the ground plane big enough for a world of stuff
     groundplanecolor: "#522F04"
   })
    
@@ -48,15 +54,27 @@ function grtown() {
     "skyTop.jpg", "skyBottom.jpg",
     "skyFront.jpg", "skyBack.jpg"
   ]);
+  envTexture.format = T.RGBFormat;
   world.scene.background = envTexture;
 
-  let grassTexture = new T.TextureLoader().load( './Examples/grass.jpg' );
+  let grassTexture = new T.TextureLoader().load( './textures/rock.jpg' );
   grassTexture.wrapS = grassTexture.wrapT = T.RepeatWrapping; 
   let customUniforms = {
 		
 		grassTexture:	{ type: "t", value: grassTexture },
-      side: T.DoubleSide
+      
   };
+  var customMaterial = shaderMaterial("./mountain.vs","./mountain.fs",{
+    uniforms: customUniforms,
+    side: T.DoubleSide
+});
+
+let geometryPlane = new T.PlaneBufferGeometry(70, 70, 50, 50);
+let terrain = new GrObject("terrain", new T.Mesh( geometryPlane, customMaterial ));
+geometryPlane.rotateY(Math.PI/2)
+geometryPlane.rotateZ(Math.PI/2)
+world.add(terrain)
+//rotate.shift(terrain,0,-3.1,0),Math.PI/2,0,0);
   
   let building_indx;
     for(building_indx = -1; building_indx < 2; building_indx ++){
@@ -80,17 +98,21 @@ function grtown() {
 
   /** Race Track - with three things racing around */
   let track = new GrTrack();
-  let tc1 = new TrackCube(track);
-  let tc2 = new TrackCube(track);
+  //let tc1 = new TrackCube(track);
+  //let tc2 = new TrackCube(track);
   let tc3 = new TrackCar(track);
 
   // place things are different points on the track
-  tc2.u = 0.25;
+  //tc2.u = 0.25;
   tc3.u = 0.125;
+  let car3 = new GrCar3(track);
+  car3.u = 0.35;
+  world.add(car3);
+  
   // and make sure they are in the world
   world.add(track);
-  world.add(tc1);
-  world.add(tc2);
+  //world.add(tc1);
+  //world.add(tc2);
   world.add(tc3);
 
   /** Helicopter - first make places for it to land*/
@@ -118,16 +140,28 @@ function grtown() {
   world.add(new GrTrees({ x: -25, z: 0, s: 1.5 }));
 
   //carousel
-  world.add(new GrCarousel({ x: 23, y:0,z: 19, size: 1.5 }));
+  world.add(new GrCarousel({ x: 23, y:0,z: -19, size: 1.5 }));
 
   //snow in the world
   world.add(new GrSnow());
+ 
 
-  // these are testing objects
+  
   world.add(new ShinySculpture(world));
   world.add(new MorphTest({ x: 10, y: 3, r: 2 }));
 
   world.add(new GrBall());
+  let forklift = new ForkLift({x:24,z:23,size:1});
+  world.add(forklift);
+  
+  let gantry_crane = new GantryCrane({x:15,z:23});
+  world.add(gantry_crane);
+  let gc_ui = new AutoUI(gantry_crane);
+
+  world.add(new GrMud)
+  
+  
+  
 
 
   // build and run the UI
