@@ -5,6 +5,7 @@
 import * as T from "../libs/CS559-THREE/build/three.module.js";
 import { GrWorld } from "../libs/CS559-Framework/GrWorld.js";
 import { GrObject } from "../libs/CS559-Framework/GrObject.js";
+import { BooleanKeyframeTrack } from "../libs/CS559-THREE/build/three.module.js";
 
 let Colors = {
     brown: 0x6D4C41,
@@ -65,10 +66,10 @@ export class GrTrees extends GrObject {
         leafL5.scale.set(2, .4, 2);
         tree.add(leafL5);
 
-        let leafL6 = new T.Mesh(treeGeo, leafMat);
-        leafL6.position.set(0, 3.4, 0);
-        leafL6.scale.set(1.5, .4, 2);
-        tree.add(leafL6);
+        let leaflight = new T.Mesh(treeGeo, leafMat);
+        leaflight.position.set(0, 3.4, 0);
+        leaflight.scale.set(1.5, .4, 2);
+        tree.add(leaflight);
 
         let leafL7 = new T.Mesh(treeGeo, leafMat);
         leafL7.position.set(0, 3.4, 0);
@@ -239,7 +240,7 @@ export class GrAirplane1 extends GrObject
             airplane.children[9].rotateOnWorldAxis(new T.Vector3(0, 1, 0), 0.5);
             airplane.children[10].rotateOnWorldAxis(new T.Vector3(0, 1, 0), 0.5);
             airplane.children[11].rotateOnWorldAxis(new T.Vector3(0, 1, 0), 0.5);
-            let theta = performance.now() / 3000;
+            let theta = performance.now() / 900;
             let x = 35 * Math.cos(theta);
             let z = 35 * Math.sin(theta);
             airplane.position.x = x;
@@ -888,137 +889,97 @@ export class GrCar extends GrObject
         }
     }
 }
-/** 
-export class GrCar2 extends GrObject
-{
-    constructor(track)
-    {
-        let loader = new T.FBXLoader();
-        let car2 = new T.Group();
-        loader.load("./Examples/Assets/teeny racecar.fbx", function(car) {
-            car.scale.set(0.05, 0.05, 0.05);
-            car.translateY(0.3);
-            car2.add(car);
-        });
-        super(`car-${++GrCarCount}`, car2);
-        this.track = track;
-        this.u = 0;
-        this.ridePoint = new T.Object3D();
-        this.ridePoint.translateY(2);
-        this.objects[0].add(this.ridePoint);
-        this.rideable = this.ridePoint;
-        this.tick = function(delta, timeOfDay)
-        {
-            this.u += delta / 4000;
-            let pos = this.track.eval(this.u);
-            this.objects[0].position.set(pos[0],pos[1],pos[2]);
-            let dir = this.track.tangent(this.u);
-            let zAngle = Math.atan2(dir[2],dir[0]);
-            this.objects[0].rotation.y = -zAngle - Math.PI/2;
-        }
-    }
-} */
 
-export class GrCar3 extends GrObject
-{
-    constructor(track)
-    {
-        let car3 = new T.Group();
 
-        let grWheel = new T.Group();
-        grWheel.translateY(0.9);
-        grWheel.rotateOnWorldAxis(new T.Vector3(0, 1, 0), 1.57);
-        car3.add(grWheel);
-        let wheelGeo = new T.TorusGeometry(0.6, 0.3, 16, 70);
-        let wheelText = new T.TextureLoader().load("./Textures/tyre.jpg");
-        let wheelMat = new T.MeshLambertMaterial({map: wheelText});
-        let wheel1 = new T.Mesh(wheelGeo, wheelMat);
-        grWheel.add(wheel1);
-        let wheel2 = new T.Mesh(wheelGeo, wheelMat);
-        wheel2.translateZ(-3.0);
-        grWheel.add(wheel2);
-        let wheel3 = new T.Mesh(wheelGeo, wheelMat);
-        wheel3.translateX(5.0);
-        grWheel.add(wheel3);
-        let wheel4 = new T.Mesh(wheelGeo, wheelMat);
-        wheel4.translateZ(-3.0);
-        wheel4.translateX(5.0);
-        grWheel.add(wheel4);
 
-        let fenderSettings = {
-            steps: 2, 
-            depth: 4,
-            bevelEnabled: false
-        };
-        let grFender = new T.Group();
-        grFender.translateY(0.8);
-        grFender.rotateOnWorldAxis(new T.Vector3(0, 1, 0), 1.57);
-        car3.add(grFender);
-        let fenderMat = new T.MeshPhongMaterial({color: Colors.white});
-        let sFender = new T.Shape();
-        sFender.moveTo(-1.5, 0.3);
-        sFender.lineTo(-1.0, 0.3);
-        sFender.lineTo(-1.0, 0.5);
-        sFender.lineTo(-0.7, 1.0);
-        sFender.lineTo(6.0, 1.0);
-        sFender.lineTo(6.3, 0.5);
-        sFender.lineTo(6.3, 0.3);
-        sFender.lineTo(6.8, 0.3);
-        sFender.lineTo(6.8, 0.5);
-        sFender.lineTo(6.3, 0.5);
-        sFender.lineTo(5.8, 1.2);
-        sFender.lineTo(-0.8, 1.2);
-        sFender.lineTo(-1.2, 0.5);
-        sFender.lineTo(-1.5, 0.5);
-        sFender.lineTo(-1.5, 0.3);
-        let fenderGeo = new T.ExtrudeGeometry(sFender, fenderSettings);
-        let fender = new T.Mesh(fenderGeo, fenderMat);
-        fender.translateZ(-3.5);
-        grFender.add(fender);
 
-        let bodySettings = {
-            steps: 2,
-            depth: 3.8,
-            bevelEnabled: false
-        };
-        let grBody = new T.Group();
-        grBody.translateY(0.8);
-        grBody.rotateOnWorldAxis(new T.Vector3(0, 1, 0), 1.57);
-        car3.add(grBody);
-        let bodytext = new T.TextureLoader().load("./Textures/car.jpg");
-        let bodyMat = new T.MeshPhongMaterial({map: bodytext});
-        let sBody = new T.Shape();
-        sBody.moveTo(-1.3, 0.5);
-        sBody.lineTo(-1.3, 2.5);
-        sBody.lineTo(1.7, 2.5);
-        sBody.lineTo(1.7, 4.8);
-        sBody.lineTo(5.5, 4.8);
-        sBody.lineTo(5.5, 1.2);
-        sBody.lineTo(-0.8, 1.2);
-        let bodyGeo = new T.ExtrudeGeometry(sBody, bodySettings);
-        let body = new T.Mesh(bodyGeo, bodyMat);
-        body.translateZ(-3.5);
-        grBody.add(body);
+    let DiscoColor = {
         
-        car3.scale.set(0.2, 0.2, 0.2);
-        super(`car-${++GrCarCount}`, car3);
-        this.track = track;
-        this.u = 0;
-        this.ridePoint = new T.Object3D();
-        this.ridePoint.translateY(2);
-        this.objects[0].add(this.ridePoint);
-        this.rideable = this.ridePoint;
-        this.tick = function(delta, timeOfDay)
-        {
-            this.u += delta / 4000;
-            let pos = this.track.eval(this.u);
-            this.objects[0].position.set(pos[0],pos[1],pos[2]);
-            let dir = this.track.tangent(this.u);
-            let zAngle = Math.atan2(dir[2],dir[0]);
-            this.objects[0].rotation.y = -zAngle - Math.PI/2;
+        yellow: "#FAF309",
+        black: "#161603"
+        
+    };
+    export class GrBall extends GrObject
+    {
+        constructor()
+        {   
+            let Sun = new T.Group();
+            super("ball", Sun);
+            let dot = new T.SphereGeometry(0.25, 16, 8);
+            
+    
+            let light = new T.PointLight(DiscoColor.yellow, 3, 100, 2);
+            light.add(new T.Mesh(dot, new T.MeshBasicMaterial({color: DiscoColor.yellow})));
+            Sun.add(light);
+
+            let light1 = new T.PointLight(DiscoColor.yellow, 3, 100, 2);
+            light.add(new T.Mesh(dot, new T.MeshBasicMaterial({color: DiscoColor.yellow})));
+            Sun.add(light1)
+
+            let light2 = new T.PointLight(DiscoColor.yellow, 3, 100, 2);
+            light.add(new T.Mesh(dot, new T.MeshBasicMaterial({color: DiscoColor.yellow})));
+            Sun.add(light2)
+            
+            let light3 = new T.PointLight(DiscoColor.yellow, 3, 100, 2);
+            light.add(new T.Mesh(dot, new T.MeshBasicMaterial({color: DiscoColor.yellow})));
+           
+
+            let light4 = new T.PointLight(DiscoColor.yellow, 3, 100, 2);
+            light.add(new T.Mesh(dot, new T.MeshBasicMaterial({color: DiscoColor.yellow})));
+           
+
+            let light5 = new T.PointLight(DiscoColor.yellow, 3, 100, 2);
+            light.add(new T.Mesh(dot, new T.MeshBasicMaterial({color: DiscoColor.yellow})));
+            
+    
+            let ballGeo = new T.SphereGeometry(5, 30, 20);
+            this.cubecam = new T.CubeCamera(1.05, 1000, 128);
+            let ballMat = new T.MeshPhongMaterial({
+                emissive: "#F7F406",
+                reflectivity: 4.0,
+                specular: DiscoColor.yellow,
+                color: DiscoColor.yellow,
+                side: T.DoubleSide,
+                combine: T.AddOperation,
+                emissiveIntensity: 10
+                
+            });
+            
+            var a = new T.Vector3( 1, 0, 0 );
+      
+            let ball = new T.Mesh(ballGeo, ballMat);
+            Sun.add(ball);
+            Sun.translateY(60);
+            Sun.translateZ(-5)
+            Sun.translateX(50)
+            Sun.raycast;
+            ball.rotateOnWorldAxis(a,4)
+            let time = 0;
+            this.tick = function(delta, timeOfDay)
+            {   
+                let theta = performance.now() / 8750;
+                let x = 35 * Math.cos(theta);
+                let z = 35 * Math.sin(theta);
+                Sun.position.x = x;
+                Sun.position.z = z;
+                time += delta / 2000;
+                ball.rotation.y += 0.005;
+                ball.rotation.z += 0.003;
+                ball.rotation.x += 0.007;
+                
+                Sun.rotateOnWorldAxis(a,4)
+    
+    
+                ball.visible = true;
+                
+            }
         }
-    }
+
+        
+
 }
+
+
 
 
 
