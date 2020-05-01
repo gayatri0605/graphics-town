@@ -478,7 +478,7 @@ export class GrBuilding3 extends GrObject {
 }
 
 
-
+/** 
 export class GrBuilding4 extends Loaders.ObjGrObject {
     constructor(light){
       super({
@@ -524,6 +524,6 @@ export class GrBuilding4 extends Loaders.ObjGrObject {
                 building.rotation.y = Math.PI;
                 break;
         }
-
+*/
       
 

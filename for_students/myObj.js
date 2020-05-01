@@ -528,6 +528,10 @@ export class GrCarousel extends GrObject
             this.platform = platform;
             this.poles = poles;
             this.horse = horse;
+            this.ridePoint = new T.Object3D();
+            this.ridePoint.translateY(2);
+            this.objects[0].add(this.ridePoint);
+            this.rideable = this.ridePoint;
             this.wholeObj.position.x = params.x ? Number(params.x) : 0;
             this.wholeObj.position.y = params.y ? Number(params.y) : 0;
             this.wholeObj.position.z = params.z ? Number(params.z) : 0;
