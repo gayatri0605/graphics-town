@@ -5,7 +5,6 @@
 import * as T from "../libs/CS559-THREE/build/three.module.js";
 import { GrWorld } from "../libs/CS559-Framework/GrWorld.js";
 import { GrObject } from "../libs/CS559-Framework/GrObject.js";
-import { BooleanKeyframeTrack } from "../libs/CS559-THREE/build/three.module.js";
 
 let Colors = {
     brown: 0x6D4C41,
@@ -622,7 +621,7 @@ export class GrBalloon extends GrObject
     constructor(params = {})
     {
         let radius = params.r || 1.0;
-        let texture = new T.TextureLoader().load("./Textures/balloon.jpg");
+        let texture = new T.TextureLoader().load("../textures/roof2.jpg");
         let material = new T.MeshStandardMaterial({map: texture, morphTargets: true, morphNormals: true, side: T.DoubleSide});
         let initGeo = new T.SphereGeometry(radius);
         let morphVer = [];
@@ -676,7 +675,7 @@ export class GrTrack extends GrObject
         ], true);
         let points1 = curve1.getPoints(50);
         let tGeo = new T.BufferGeometry().setFromPoints(points1);
-        let tMat = new T.LineBasicMaterial({color: Colors.gray, linecap: "round", linewidth: 1});
+        let tMat = new T.LineBasicMaterial({color: Colors.brown, linecap: "round", linewidth: 35});
         let t = new T.Line(tGeo, tMat);
         let curve2 = new T.CatmullRomCurve3([
             new T.Vector3(-7, 0, 7),
@@ -873,7 +872,7 @@ export class GrCar extends GrObject
         bodyGroup.rotateOnWorldAxis(new T.Vector3(0, 1, 0), 1.57);
 
         car.translateY(0.5);
-        car.scale.set(0.6, 0.6, 0.6);
+        car.scale.set(0.7, 0.8, 0.6);
         super(`car-${++GrCarCount}`, car);
 
         this.track = track;

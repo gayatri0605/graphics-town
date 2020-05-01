@@ -9,11 +9,7 @@
 
 
 import * as T from "../libs/CS559-THREE/build/three.module.js";
-import { GrWorld } from "../libs/CS559-Framework/GrWorld.js";
 import { GrObject } from "../libs/CS559-Framework/GrObject.js";
-import { OBJLoader } from "../libs/CS559-THREE/examples/jsm/loaders/OBJLoader.js";
-import * as Loaders from "../libs/CS559-Framework/loaders.js";
-import * as Helpers from "../libs/CS559-Libs/helpers.js";
 
 
 
@@ -477,53 +473,4 @@ export class GrBuilding3 extends GrObject {
   }
 }
 
-
-/** 
-export class GrBuilding4 extends Loaders.ObjGrObject {
-    constructor(light){
-      super({
-        let lighthouse = new Loaders.ObjGrObject({
-          obj:"../objects/lighthouse.obj",
-          mtl:"./objects/Blank.mtl",
-          mtloptions: {side:T.DoubleSide},
-          callback: function (obj) {
-              console.log(obj);
-              obj.objects.forEach(ob => console.log(ob));
-            }
-          })
-        });
-    
-				lighthouse.position.set(0, 3.5, 0);
-				lighthouse.scale.set(0.2,0.2,0.2);
-				building.add(lighthouse);
-				lighthouse.translateY(1.0);
-
-				lighthouse.traverse(function(child) {
-					if (child instanceof T.Mesh) {
-					  child.material = horse_mat;
-          }
-        super(`Lighthouse-${lighthousenum++}`,building);
-        this.whole_ob = building;
-        building.rotateX(-Math.PI/2);
-        this.whole_ob.position.x = params.x ? Number(params.x) : 0;
-        this.whole_ob.position.y = params.y ? Number(params.y) : 0;
-		    this.whole_ob.position.z = params.z ? Number(params.z) : 0;
-        let scale = params.size ? Number(params.size) : 1;
-        building.scale.set(scale,scale,scale);
-        this.rotate = params.rotate ? Number(params.rotate) : 0;
-        switch(this.rotate) {
-            case 0:
-                break;
-            case 1:
-                building.rotation.y = Math.PI/2;
-                break;
-            case 2:
-                building.rotation.y = -Math.PI/2;
-                break;
-            case 3:
-                building.rotation.y = Math.PI;
-                break;
-        }
-*/
-      
 

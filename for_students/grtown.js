@@ -20,16 +20,14 @@ import { GrWorld } from "../libs/CS559-Framework/GrWorld.js";
 import { GrObject } from "../libs/CS559-Framework/GrObject.js";  // only for typing
 import * as Helpers from "../libs/CS559-Libs/helpers.js";
 import { WorldUI } from "../libs/CS559-Framework/WorldUI.js";
-import * as SimpleObjects from "../libs/CS559-Framework/SimpleObjects.js";
 import {shaderMaterial} from "../libs/CS559-Framework/shaderHelper.js";
 import { AutoUI } from "../libs/CS559-Framework/AutoUI.js";
 
-import { CircularTrack, TrackCube, TrackCar } from "../examples/track.js";
+import { TrackCar } from "../examples/track.js";
 import { ShinySculpture } from "../examples/shinySculpture.js";
 import { MorphTest } from "../examples/morph.js";
-import { GrTrees, GrSnow, GrHelipad, GrCarousel, GrAirplane1, GrAirplane2, GrBall, GrTrack, GrCar3,GrMud} from "./myObj.js";
-import {GrBuilding1,GrBuilding2,GrBuilding3} from "../for_students/house.js"
-import { GrCrane, GrExcavator } from "./construction.js";
+import { GrTrees, GrSnow, GrHelipad, GrCarousel, GrAirplane1, GrAirplane2, GrBall, GrTrack, GrCar3,GrMud, GrCar} from "./myObj.js";
+import {GrBuilding1,GrBuilding2,GrBuilding3} from "../for_students/house.js";
 import { ForkLift, GantryCrane } from "./construction.js";
 
 
@@ -46,7 +44,7 @@ function grtown() {
   })
    
 
-  //TO-DO
+  
   let loader = new T.CubeTextureLoader();
   loader.setPath('./textures/');
   let envTexture = loader.load([
@@ -54,14 +52,28 @@ function grtown() {
     "skyTop.jpg", "skyBottom.jpg",
     "skyFront.jpg", "skyBack.jpg"
   ]);
+
+  let bumpTexture = new T.TextureLoader().load( './textures/land.png' );
+	bumpTexture.wrapS = bumpTexture.wrapT = T.RepeatWrapping; 
+	let bumpScale   = 5.0;
   envTexture.format = T.RGBFormat;
   world.scene.background = envTexture;
 
-  let grassTexture = new T.TextureLoader().load( './textures/rock.jpg' );
+  let grassTexture = new T.TextureLoader().load( './textures/grass.png' );
   grassTexture.wrapS = grassTexture.wrapT = T.RepeatWrapping; 
+
+  let mudTexture = new T.TextureLoader().load( './textures/wetmud.jpg' );
+  mudTexture.wrapS = mudTexture.wrapT = T.RepeatWrapping; 
+
+  let rockyTexture = new T.TextureLoader().load( './textures/rock.jpg' );
+	rockyTexture.wrapS = rockyTexture.wrapT = T.RepeatWrapping; 
+	
   let customUniforms = {
-		
-		grassTexture:	{ type: "t", value: grassTexture },
+    bumpTexture:	{ type: "t", value: bumpTexture },
+		bumpScale:	    { type: "f", value: bumpScale },
+		rockyTexture:	{ type: "t", value: rockyTexture },
+    grassTexture:	{ type: "t", value: grassTexture },
+    mudTexture: {type:"t",value: mudTexture}
       
   };
   var customMaterial = shaderMaterial("./mountain.vs","./mountain.fs",{
@@ -73,8 +85,9 @@ let geometryPlane = new T.PlaneBufferGeometry(70, 70, 50, 50);
 let terrain = new GrObject("terrain", new T.Mesh( geometryPlane, customMaterial ));
 geometryPlane.rotateY(Math.PI/2)
 geometryPlane.rotateZ(Math.PI/2)
+geometryPlane.translate(0,-1.8,0)
 world.add(terrain)
-//rotate.shift(terrain,0,-3.1,0),Math.PI/2,0,0);
+
   
   let building_indx;
     for(building_indx = -1; building_indx < 2; building_indx ++){
@@ -86,33 +99,26 @@ world.add(terrain)
     }
     for(building_indx = -1; building_indx < 2; building_indx ++){
         world.add(new GrBuilding1({x:building_indx*7 - 2,z: -23, size:2.6, rotate:0}));
-        world.add(new GrBuilding1({x:building_indx*7 - 2,z: -31, size:2.6, rotate:0}));
+        world.add(new GrBuilding1({x:building_indx*7 - 2,z: -31,size:2.6, rotate:0}));
     }
 
-  /** 
-  for (let i = -19; i < 20; i += 5) {
-    world.add(new SimpleHouse({ x: i, z: -12 }));
-    world.add(new SimpleHouse({ x: i, z: 12 }));
-  }
-  */
+  
 
   /** Race Track - with three things racing around */
   let track = new GrTrack();
-  //let tc1 = new TrackCube(track);
-  //let tc2 = new TrackCube(track);
   let tc3 = new TrackCar(track);
 
   // place things are different points on the track
-  //tc2.u = 0.25;
   tc3.u = 0.125;
   let car3 = new GrCar3(track);
+  let car = new GrCar(track);
+  car.u =0.25
   car3.u = 0.35;
   world.add(car3);
+  world.add(car);
   
   // and make sure they are in the world
   world.add(track);
-  //world.add(tc1);
-  //world.add(tc2);
   world.add(tc3);
 
   /** Helicopter - first make places for it to land*/
@@ -146,7 +152,7 @@ world.add(terrain)
   world.add(new GrSnow());
  
 
-  
+  //construction objects
   world.add(new ShinySculpture(world));
   world.add(new MorphTest({ x: 10, y: 3, r: 2 }));
 
@@ -160,10 +166,6 @@ world.add(terrain)
 
   world.add(new GrMud)
   
-  
-  
-
-
   // build and run the UI
 
   // only after all the objects exist can we build the UI
