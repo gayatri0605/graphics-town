@@ -75,8 +75,8 @@ I created snow that changes the orientation depending on what angle you view it 
 #### Complex Thing 2:
 
 ## Screenshots
-(/for_students/town1.png)
-(/for_students/town2.png)
+![screenshot 1](/for_students/town1.png) \n
+![screenshot 2](/for_students/town2.png) \n
 
 
 List the pictures that you made with a brief description
