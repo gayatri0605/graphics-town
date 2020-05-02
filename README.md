@@ -4,7 +4,7 @@ Note: filling out this file is extremely important. If you don't describe your a
 
 - Gayatri Visvanathan
 - gayatri0605
-- 9080257844
+- gvisvanathan
 
 See README-example.md in the examples directory for ideas on what we are looking for.
 
@@ -75,8 +75,8 @@ I created snow that changes the orientation depending on what angle you view it 
 #### Complex Thing 2:
 
 ## Screenshots
-![screenshot 1](/for_students/town1.png) \n
-![screenshot 2](/for_students/town2.png) \n
+![screenshot 1](/for_students/town1.png) 
+![screenshot 2](/for_students/town2.png) 
 
 
 List the pictures that you made with a brief description
@@ -86,7 +86,15 @@ List the pictures that you made with a brief description
 ## Other Notes to the Graders
 
 ## Attributions (including self-attributions)
-
+the carousel was from a previuous assignment
+the construction objects are also from a previous assignment
+i found all the textures online as pictures from sites
+https://www.filterforge.com/filters/14435-v6.jpg
+https://www.textures.com/system/categories/2204/frontend-large.jpg
+https://forums.openrct2.org/uploads/monthly_2017_06/scene2.png.72fadcf00adf7c876f53f2fc0b4a85e6.png
+https://previews.123rf.com/images/srckomkrit/srckomkrit1810/srckomkrit181000874/109352339-wet-mud-texture.jpg
+https://www.textures.com/system/categories/2128/frontend-large.jpg
+https://png.pngtree.com/png-clipart/20190604/original/pngtree-wall-texture-png-image_945927.jpg
 ## Consent
 
 The student consents to having their assignment shown in Galleries and Peer Review.
