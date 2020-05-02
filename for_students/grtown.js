@@ -73,7 +73,8 @@ function grtown() {
 		bumpScale:	    { type: "f", value: bumpScale },
 		rockyTexture:	{ type: "t", value: rockyTexture },
     grassTexture:	{ type: "t", value: grassTexture },
-    mudTexture: {type:"t",value: mudTexture}
+    mudTexture: {type:"t",value: mudTexture},
+    
       
   };
   var customMaterial = shaderMaterial("./mountain.vs","./mountain.fs",{
